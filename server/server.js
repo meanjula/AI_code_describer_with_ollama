@@ -5,7 +5,7 @@ import helmet from 'helmet';
 
 const app = express();
 const corsOptions = {
-    origin: "http://localhost:3000", // Allow all origins
+    origin: "http://localhost:5173", // Allow requests from this origin
     credentials: true, // Allow cookies and credentials
 };
 app.use(cors(corsOptions));

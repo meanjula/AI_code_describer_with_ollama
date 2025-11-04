@@ -1,8 +1,8 @@
 
 # Node
-node_modules
-*.env
-*/server/node_modules
+node_modules/
+server/node_modules/
+code_explain_UI/node_modules/
 
 # production
 /build
