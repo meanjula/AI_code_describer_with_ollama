@@ -1,0 +1,23 @@
+
+# Node
+node_modules
+*.env
+*/server/node_modules
+
+# production
+/build
+
+# misc
+.vscode
+.DS_Store
+*.pem
+ 
+
+# Logs
+*.log
+
+# debug
+npm-debug.log*
+
+# local env files.
+.env
