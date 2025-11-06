@@ -1,6 +1,7 @@
+
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
+
 
 
 const app = express();
@@ -9,7 +10,7 @@ const corsOptions = {
     credentials: true, // Allow cookies and credentials
 };
 app.use(cors(corsOptions));
-app.use(helmet());
+
 app.use(express.json());
 // Health check route
 app.get("/", (req, res) => {
@@ -61,27 +62,50 @@ app.post("/api/explain-code",async (req,res) => {
         if (!ollamaResponse.ok) {
             throw new Error(`Ollama API error: ${ollamaResponse.statusText}`);
         }
+         console.log("✅ Connected to Ollama stream");
+
+          // Use a TextDecoder to accumulate full UTF-8 chunks
+        const decoder = new TextDecoder();
         //Stream Ollama's NDJSON response line by line to client
         let buffer = "";
-        for await (const chunk of ollamaResponse.body) { //chunk is a Buffer or Uint8Array
-            
-            const lines = chunk.toString().split("\n").filter(Boolean);//convert raw binary chunk to string and split into array of lines using newline as separator and filter out empty lines, as in js Boolean("") is false
-               console.log("lines",lines.toString());    
-            for (const line of lines) {
-                const data = JSON.parse(line);
-                console.log(data)
-                if (data.response) {
-                // Stream partial tokens as NDJSON
-                res.write(JSON.stringify({ type: "token", content: data.response }) + "\n");
-                }
+        let fullText = "";
+        for await (const chunk of ollamaResponse.body) { //chunk is a Buffer or Uint8Array       
+          buffer += decoder.decode(chunk, { stream: true });
+            // Split by newline or carriage return
+          const parts = buffer.split(/\r?\n/);
+          console.log("Received chunk:", parts);
+          // Keep the last (possibly incomplete) part in buffer
+          buffer = parts.pop();
+          for (const line of parts) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
 
-                if (data.done) {
-                // Signal completion
-                res.write(JSON.stringify({ type: "done" }) + "\n");
-                res.end();
-                }
-            }
+        try {
+          const data = JSON.parse(trimmed);
+          console.log(data)
+          // Accumulate each assistant token
+          if (data.message?.content) {
+            fullText += data.message.content;
+            // Optionally stream partial tokens to frontend
+            res.write(
+              JSON.stringify({ type: "token", content: data.message.content }) +
+                "\n"
+            );
+          }
+          if (data.done) {
+            res.write(JSON.stringify({ type: "done", content: fullText }) + "\n");
+            console.log("✅ Stream ended cleanly");
+            res.end();
+            return;
+          }
+        } catch (err) {
+          console.warn("⚠️ Skipping malformed JSON:", trimmed);
         }
+      }
+        }
+        // Safety fallback if 'done' never appears
+    res.write(JSON.stringify({ type: "done", content: fullText }) + "\n");
+    res.end();
     } catch (error) {
         console.error("API error", error);
         res.write(JSON.stringify({ type: "error", message: "Server error or Ollama not running." }) + "\n");
