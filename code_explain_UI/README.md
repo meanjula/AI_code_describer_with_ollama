@@ -5,15 +5,6 @@ Paste any code snippet, select a language, and get a streaming AI-powered explan
 
 ---
 
-## Screenshot
-
-<p float="left">
-  <img src="./src/assets/code-explain-UI.png" width="45%" style="margin-right: 5%;" />
-  <img src="./src/assets/code-explanation.png" width="45%" />
-</p>
-
----
-
 ## 🚀 Tech Stack
 
 - ⚛️ **React 19** — latest React with concurrent rendering support  
@@ -46,6 +37,12 @@ code_explain_UI/
 └── README.md
 
 ```
+---
+
+## Screenshot
+<img src="./public/code-explanation.png" width="45%" style="margin: auto;" />
+<img src="./src/assets/code-explain-UI.png" width="45%" style="margin-right: 5%;" />
+
 ---
 
 ## ⚙️ Setup Instructions For OllAMA_APP 

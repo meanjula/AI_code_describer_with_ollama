@@ -27,6 +27,8 @@ OLLAMA_APP/
 └── README.md
 
 ```
+<img src="code_explain_UI/public/code-explanation.png" width="45%" style="margin: auto;" alt="app UI screenshot after response" />
+
 ## ⚙️ Server Setup Instructions For OllAMA_APP 
 
 ### Prerequisites
@@ -94,11 +96,14 @@ THe frontend (React app) sends a 'POST' request wirh a jso body like:
   "code":"function sum(a,b){ return a+b}",
   "language":"javascript"
 }
+```
 
 ### AI Prompt in server
+
 The Express server validates the input, then creates a chat-style prompt for Ollama:
 ```bash
 const message = [
+  ```javascript
   {
     role: "user",
     content: `You are a senior ${language} developer and mentor.
@@ -109,7 +114,8 @@ const message = [
     \`\`\`${language}
     ${code}
     \`\`\``
-  }
+    }
+  ```
 ];
 ```
 This prompt gives the LLM context and structure for producing a technical yet beginner-friendly explanation.
