@@ -5,6 +5,15 @@ Paste any code snippet, select a language, and get a streaming AI-powered explan
 
 ---
 
+## Screenshot
+
+<p float="left">
+  <img src="./src/assets/code-explain-UI.png" width="45%" style="margin-right: 5%;" />
+  <img src="./src/assets/code-explanation.png" width="45%" />
+</p>
+
+---
+
 ## 🚀 Tech Stack
 
 - ⚛️ **React 19** — latest React with concurrent rendering support  
@@ -104,3 +113,9 @@ npm install
 npm run dev
 
 ```
+
+res.body = a pipe that the words flow through
+
+getReader() = your hand catching each word chunk
+
+TextDecoder() = your translator converting binary data into text

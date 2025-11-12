@@ -28,9 +28,9 @@ export default function App() {
       if (!res.ok) throw new Error("Server returned an error");
 
       // Get readable stream
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-
+      const reader = res.body.getReader(); // catching each word chunk
+      const decoder = new TextDecoder();  // translator converting binary data into text
+      
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -46,12 +46,12 @@ export default function App() {
               setLoading(false);
               if (!firstChunkSeen) {
                 firstChunkSeen = true;
-                explanationRef.current?.scrollIntoView({ behavior: "smooth" });
+                explanationRef.current?.scrollIntoView();
               }
               // Update progressively
               setExplanation((prev) => prev + data.content);
             } else if (data.type === "done" && data.content) {
-              explanationRef.current?.scrollIntoView({ behavior: "smooth" });
+              explanationRef.current?.scrollIntoView();
               explanationRef.current?.focus();
               // Final content (ensure complete)
               setExplanation(data.content);

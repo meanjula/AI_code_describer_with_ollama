@@ -7,7 +7,7 @@ import cors from 'cors';
 const app = express();
 const corsOptions = {
     origin: "http://localhost:5173", // Allow requests from this origin
-    credentials: true, // Allow cookies and credentials
+    credentials: true,              // Allow cookies and credentials
 };
 app.use(cors(corsOptions));
 
@@ -49,15 +49,14 @@ app.post("/api/explain-code",async (req,res) => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: 'llama3',//llama3 model for cost-effective responses
-            messages:message,//user prompt
-            stream: true,//Enable streaming
-            temperature: 0.3,//consistent withlow randomness of response
-            max_tokens: 800,//Limit response character length
+            model: 'llama3',  //llama3 model for cost-effective responses
+            messages:message, //user prompt
+            stream: true,     //Enable streaming
+            temperature: 0.3, //consistent withlow randomness of response
+            max_tokens: 800,  //Limit response character length
           })
          
         });
-        console.log("Payload sent to Ollama:", message);
 
         if (!ollamaResponse.ok) {
             throw new Error(`Ollama API error: ${ollamaResponse.statusText}`);
@@ -73,16 +72,14 @@ app.post("/api/explain-code",async (req,res) => {
           buffer += decoder.decode(chunk, { stream: true });
             // Split by newline or carriage return
           const parts = buffer.split(/\r?\n/);
-          console.log("Received chunk:", parts);
-          // Keep the last (possibly incomplete) part in buffer
-          buffer = parts.pop();
+   
+          buffer = parts.pop();       //keep incomplete part in buffer
           for (const line of parts) {
-        const trimmed = line.trim();
-        if (!trimmed) continue;
+        const trimmed = line.trim();  //clean up whitespace
+        if (!trimmed) continue;      //skip empty lines
 
         try {
           const data = JSON.parse(trimmed);
-          console.log(data)
           // Accumulate each assistant token
           if (data.message?.content) {
             fullText += data.message.content;
@@ -118,4 +115,4 @@ app.post("/api/explain-code",async (req,res) => {
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`);
-}); 
+});
