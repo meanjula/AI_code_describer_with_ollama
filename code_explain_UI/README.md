@@ -1,16 +1,106 @@
-# React + Vite
+# 💡AI_Code_explainer_with_Ollama (UI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **React 19 + Vite** app that connects to an **Express + Ollama backend** to explain code in plain English.  
+Paste any code snippet, select a language, and get a streaming AI-powered explanation in real time.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## React Compiler
+- ⚛️ **React 19** — latest React with concurrent rendering support  
+- ⚡ **Vite** — lightning-fast dev server and build tool  
+- 🎨 **Tailwind CSS** (via `@tailwindcss/vite`) — utility-first modern styling  
+- 💬 **React Markdown** — clean Markdown rendering for AI responses  
+- 🔗 **Fetch Streaming API** — real-time NDJSON response from backend  
+- 🤖 **Ollama (Llama3)** — local AI model that generates explanations
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📁 Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+code_explain_UI/
+├── src/
+│ ├── assets/
+│ ├── components/             # Shared presentational components
+│ │ ├── CodeExplainer.jsx            # Code input editor
+│ │ ├── LanguageSelector.jsx  # Language dropdown
+│ │ ├── Explanation.jsx       # Streaming AI output renderer
+│ │ └── Button.jsx            # Reusable button
+│ ├── App.jsx                 # Main React component (UI+logic)
+│ ├── main.jsx # Entry point
+│ ├── index.css # Tailwind import
+├──  .gitignore
+├── index.html
+├── package.json
+├── vite.config.js # Vite + Tailwind plugin config
+└── README.md
+
+```
+---
+
+## ⚙️ Setup Instructions For OllAMA_APP 
+
+### Prerequisites
+
+Make sure you have installed:
+
+- Node.js **v18+**
+- Ollama running locally  
+  (with `llama3` model downloaded: `ollama pull llama3`)
+- Backend API running - inside server `npm run dev`
+
+---
+
+### Create a New Vite Project
+
+```bash
+- npm create vite@latest app-name
+```
+
+### Install Dependencies
+
+`npm install @tailwindcss/vite react-markdown``
+
+
+### Run the App
+
+`npm run dev`
+
+### Tailwind Setup
+This project uses the new Tailwind Vite plugin (no PostCSS config needed).
+
+✅ vite.config.js
+
+```bash
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+```
+
+✅ src/index.css
+
+`@import "tailwindcss";`
+
+🧠 How It Works
+
+User pastes code and selects a language
+
+Frontend sends a POST request to backend /api/explain-code
+
+Backend streams AI tokens (NDJSON format) from Ollama
+
+Frontend reads the stream with ReadableStream, updates UI live
+
+Markdown explanations render instantly with smooth scrolling
+
+🧭 Quick Start Summary
+
+```bash
+
+git clone <repo>
+cd frontend
+npm install
+npm run dev
+
+```

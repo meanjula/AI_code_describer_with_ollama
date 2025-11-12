@@ -1,5 +1,8 @@
 import { useState, useRef } from "react";
 import Explanation from "./Explanation.jsx";
+import Button from "./Button.jsx";
+import LanguageSelector from "./LanguageSelector.jsx";
+import TextArea from "./TextArea.jsx";
 
 export default function App() {
   const [language, setLanguage] = useState("javascript");
@@ -68,38 +71,24 @@ export default function App() {
     }
   };
   const options = ["javascript", "python", "java", "c++", "typescript", "go"];
-  console.log("Rendering with state:", explanation);
+ 
   return (
     <div className="min-w-[45vw] bg-gray-800 text-gray-100 flex flex-col items-center p-6 rounded-3xl shadow-2xl  ">
       <h1 className="text-3xl font-bold mb-6">🦙 Code Explainer</h1>
       <div className="bg-gray-800 p-6 rounded-2xl shadow-lg w-full max-w-3xl space-y-4">
         <div className="flex justify-between items-center">
-          <label className="text-lg font-medium">Select Language:</label>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="bg-gray-700 border border-gray-600 rounded-md p-2"
-          >
-            {options.map((lang) => (
-              <option key={lang} value={lang}>
-                {lang.at(0).toUpperCase() + lang.slice(1)}
-              </option>
-            ))}
-          </select>
+          <LanguageSelector
+            language={language}
+            setLanguage={setLanguage}
+            options={options}
+          />
         </div>
-        <textarea
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          placeholder="Paste your code here..."
-          className="w-full h-48 bg-gray-900 border border-gray-700 rounded-md p-3 font-mono text-sm text-white"
-        />
-        <button
+        <TextArea code={code} setCode={setCode} />
+        <Button
           onClick={handleExplain}
           disabled={loading || !code.trim()}
-          className=" bg-blue-600 hover:bg-blue-700 transition text-white p-3 rounded-md font-semibold disabled:opacity-50"
-        >
-          {loading ? "Explaining..." : "Explain Code"}
-        </button>
+          loading={loading}
+        />
       </div>
       <>
         {error && (

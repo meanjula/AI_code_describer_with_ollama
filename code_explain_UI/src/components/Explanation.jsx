@@ -5,7 +5,7 @@ export default function Explanation({ explanation, explanationRef }) {
   return (
     <div
       ref={explanationRef}
-      className="w-full max-w-3xl  bg-linear-to-b from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg p-6 focus:outline-none transition-all duration-300"
+      className="w-full max-w-3xl bg-linear-to-b from-gray-800 to-gray-900 border border-gray-700 rounded-2xl shadow-lg p-6 focus:outline-none transition-all duration-300"
     >
       <h2 className="text-xl font-semibold mb-3 text-green-400">
         💬 <span>Explanation</span>
