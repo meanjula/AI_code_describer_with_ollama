@@ -1,5 +1,4 @@
 import ollamaLogo from "./assets/ollama.svg";
-import "./App.css";
 import CodeExplainer from "./components/CodeExplainer.jsx";
 
 function App() {
